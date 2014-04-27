@@ -1,3 +1,6 @@
+
+## The following was presented, in part, on the Discussion Forum by Fu Sheng Wang and it has been altered to answer this assignment:
+  
 ## Catching the Mean of a Vector
 
 ##  The first function, makeVector creates a special "vector", which is really a list containing a function to 
@@ -6,16 +9,14 @@
 ## 3.set the value of the mean
 ## 4.get the value of the mean
 
-## The following was presented on the Discussion Forum by Fu Sheng Wang and it has been altered to answer this assignment:
-  
-## The example function "makeVector" is a function with the following properties
+## The function "makeVector" is a function with the following properties
 ## 1. it takes an argument x of type numeric vector
 ## 2. it returns a list with 4 list items  (they are actually 4 functions wrapped in a list)
 makeVector <- function(x = numeric()) {
         m <- NULL
         set <- function(y) {
                 x <<- y
-                m <<- NULL
+                m <<- NULL    
         }
         get <- function() x
         setmean <- function(mean) m <<- mean
@@ -25,7 +26,7 @@ makeVector <- function(x = numeric()) {
              getmean = getmean)
 }
 
-## so you when you create a "special vector" using makeVector function, you will get a list
+## when you create a "special vector" using makeVector function, you will get a list
 > a <- makeVector(c(1,2,3))
 > class(a)
 [1] "list"
@@ -47,17 +48,7 @@ makeVector <- function(x = numeric()) {
 ## The function cacheMean is a client function that uses the makeVector function in its implementation.
 ## The input is expecting a "special vector" made from makeVector (ignore the ... for now).
 ## The output is the mean coming whether from the special vector's  cache or computation:
-cachemean <- function(x, ...) {
-        m <- x$getmean()
-        if(!is.null(m)) {
-                message("getting cached data")
-                return(m)
-        }
-        data <- x$get()
-        m <- mean(data, ...)
-        x$setmean(m)
-        m
-}
+
 cachemean <- function(x, ...) {
         m <- x$getmean()           #query the x vector's cache         
         if(!is.null(m)) {           #if there is a cache
