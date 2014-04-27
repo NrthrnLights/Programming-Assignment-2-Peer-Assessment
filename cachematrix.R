@@ -11,9 +11,19 @@
 ## The example function "makeVector" is a function with the following properties
 ## 1. it takes an argument x of type numeric vector
 ## 2. it returns a list with 4 list items  (they are actually 4 functions wrapped in a list)
-> list(set = set, get = get,
-     setmean = setmean,
-     getmean = getmean)
+makeVector <- function(x = numeric()) {
+        m <- NULL
+        set <- function(y) {
+                x <<- y
+                m <<- NULL
+        }
+        get <- function() x
+        setmean <- function(mean) m <<- mean
+        getmean <- function() m
+        list(set = set, get = get,
+             setmean = setmean,
+             getmean = getmean)
+}
 
 ## so you when you create a "special vector" using makeVector function, you will get a list
 > a <- makeVector(c(1,2,3))
@@ -38,15 +48,26 @@
 ## The input is expecting a "special vector" made from makeVector (ignore the ... for now).
 ## The output is the mean coming whether from the special vector's  cache or computation:
 cachemean <- function(x, ...) {
-m <- x$getmean()           #query the x vector's cache         
-if(!is.null(m)) {           #if there is a cache
-  message("getting cached data") 
-  return(m)                #just return the cache, no computation needed
+        m <- x$getmean()
+        if(!is.null(m)) {
+                message("getting cached data")
+                return(m)
+        }
+        data <- x$get()
+        m <- mean(data, ...)
+        x$setmean(m)
+        m
 }
-data <- x$get()             #if there's no cache
-m <- mean(data, ...)        #we actually compute them here
-x$setmean(m)                #save the result back to x's cache
-m                           #return the result
+cachemean <- function(x, ...) {
+        m <- x$getmean()           #query the x vector's cache         
+        if(!is.null(m)) {           #if there is a cache
+              message("getting cached data") 
+              return(m)             #just return the cache, no computation needed
+}
+        data <- x$get()             #if there's no cache
+        m <- mean(data, ...)        #we actually compute them here
+        x$setmean(m)                #save the result back to x's cache
+        m                           #return the result
 }
 
 usage:
