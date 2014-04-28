@@ -1,4 +1,3 @@
-
 ## The following was presented, in part, on the Discussion Forum by Fu Sheng Wang and it has been altered to answer this assignment:
   
 ## Catching the Mean of a Vector
@@ -13,14 +12,18 @@
 ## 1. it takes an argument x of type numeric vector
 ## 2. it returns a list with 4 list items  (they are actually 4 functions wrapped in a list)
 makeVector <- function(x = numeric()) {
-        m <- NULL
+        m <- NULL               # cache variable in makeVector environment
         set <- function(y) {
                 x <<- y
-                m <<- NULL    
+                m <<- NULL    # Null returns loop to null at each pass.
         }
         get <- function() x
         setmean <- function(mean) m <<- mean
-        getmean <- function() m
+        { print(x)
+          makeVector<<-mean(x)    #sets vector environment
+          print("test")
+          print(makeVector)}
+        getmean <- function() m   #return variable
         list(set = set, get = get,
              setmean = setmean,
              getmean = getmean)
@@ -45,8 +48,8 @@ makeVector <- function(x = numeric()) {
 
 ## Caching the Inverse of a Matrix
 
-## The function cacheMean is a client function that uses the makeVector function in its implementation.
-## The input is expecting a "special vector" made from makeVector (ignore the ... for now).
+## The function cacheMean is a function that uses the makeVector function.
+## The input is expecting a "special vector" made from makeVector.
 ## The output is the mean coming whether from the special vector's  cache or computation:
 
 cachemean <- function(x, ...) {
@@ -91,7 +94,7 @@ NULL
 [2,]    6    8
 > 
   
-## The cacheSolve function computes the inverse of the special "matrix" returned by makeCacheMatrix above. If the inverse has already been calculated (and the matrix has not changed), then the cachesolve should retrieve the inverse from the cache.
+## cacheSolve function computes the inverse of the special "matrix" returned by makeCacheMatrix above. If the inverse has already been calculated (and the matrix has not changed), then the cachesolve should retrieve the inverse from the cache.
 
   > cacheSolve(a)
 [,1] [,2]
@@ -114,7 +117,7 @@ getting cached data
   > b = a$getInverse()
 > a$get() %*% b           #this matrix multiplication should show identity matrix
 [,1]         [,2]
-[1,]    1 3.552714e-15    #3.552714e-15 ~= 0 (due floating point rounding error)
-[2,]    0 1.000000e+00    #1.000000e+00 = 1
+[1,]    1 3.552714e-15    
+[2,]    0 1.000000e+00    
 > 
   
