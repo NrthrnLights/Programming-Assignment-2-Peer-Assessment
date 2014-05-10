@@ -1,8 +1,6 @@
-## The following was presented, in part, on the Discussion Forum by Fu Sheng Wang and it has been altered to answer this assignment:
-  
 ## Catching the Mean of a Vector
 
-##  The first function, makeVector creates a special "vector", which is really a list containing a function to 
+## The first function, makeVector creates a "special vector", which is a list containing a function to 
 ## 1.set the value of the vector
 ## 2.get the value of the vector
 ## 3.set the value of the mean
@@ -19,11 +17,7 @@ makeVector <- function(x = numeric()) {
         }
         get <- function() x
         setmean <- function(mean) m <<- mean
-        { print(x)
-          makeVector<<-mean(x)    #sets vector environment
-          print("test")
-          print(makeVector)}
-        getmean <- function() m   #return variable
+        getmean <- function() m   #returns variable
         list(set = set, get = get,
              setmean = setmean,
              getmean = getmean)
