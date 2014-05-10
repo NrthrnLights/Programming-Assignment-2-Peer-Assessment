@@ -71,8 +71,22 @@ getting cached data
 
 ## The makeCacheMatrix function creates a special "matrix" object that can cache its inverse.
 
-> a <- makeCacheMatrix(matrix(1:4,2))
->
+makeCacheMatrix <- function(x, ...) {
+        m <- NULL               # cache variable in makeVector environment
+        set <- function(y) {
+                x <<- y
+                m <<- NULL    # Null returns loop to null at each pass.
+        }
+        get <- function() x
+        setmatrix <- function(matrix) m <<- matrix
+        getmatrix <- function() m   #returns variable
+        list(set = set, get = get,
+             setmatrix = setmatrix,
+             getmatrix = getmatrix
+}
+a <- makeCacheMatrix(matrix(1:4,2)) #created matrix of makeCacheMatrix function
+}
+
   > a$get()
 [,1] [,2]
 [1,]    1    3
@@ -88,7 +102,23 @@ NULL
 [2,]    6    8
 > 
   
-## cacheSolve function computes the inverse of the special "matrix" returned by makeCacheMatrix above. If the inverse has already been calculated (and the matrix has not changed), then the cachesolve should retrieve the inverse from the cache.
+## cacheSolve function computes the inverse of the "special matrix" returned by makeCacheMatrix above. 
+## If the inverse has already been calculated (and the matrix has not changed), 
+## then the cachesolve should retrieve the inverse from the cache.
+
+cacheSolve <- function(x, ...) {
+        m <- x$getinverse()         #query the x vector's cache         
+        if(!is.null(m)) {           #if there is a cache
+              message("inverse of cached data") 
+              return(m)             #just return the cache, no computation needed
+}
+        data <- x$get()             #if there's no cache
+        m <- inverse(data, ...)     #we actually compute them here
+        x$setinverse(m)             #save the result back to x's cache
+        m                           #return the result
+}
+a <- cacheSolve(inverse(makeCacheMatrix)) #created inverse matrix of makeCacheMatrix function
+}
 
   > cacheSolve(a)
 [,1] [,2]
